@@ -82,6 +82,7 @@ class Nogizaka:
         with open("./{}/{}-CN.txt".format(blogdir, date),'w') as f:
             trans_title = translator.transformer(title)
             trans_blogcontent = translator.transformer(blogcontent)
+            print(trans_title, trans_blogcontent)
             f.write(trans_title+'\n\n')
             f.write(trans_blogcontent)
 
