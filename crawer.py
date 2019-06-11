@@ -79,12 +79,23 @@ class Nogizaka:
                 f.write(pic.content)
             p_num += 1
         '''
-        with open("./{}/{}-CN.txt".format(blogdir, date),'w') as f:
-            trans_title = translator.transformer(title)
-            trans_blogcontent = translator.transformer(blogcontent)
-            print(trans_title, trans_blogcontent)
-            f.write(trans_title+'\n\n')
-            f.write(trans_blogcontent)
+        try:
+            with open("./{}/{}-CN.txt".format(blogdir, date),'w') as f:
+                trans_title = translator.transformer(title)
+                f.write(trans_title+'\n\n')
+                strlength = 300
+                blog_pieces = re.findall(r'.{'+str(strlength)+'}', blogcontent)
+                blog_pieces.append(blogcontent[len(blog_pieces)*strlength:])
+                res = str()
+                for s in blog_pieces:
+                    s_tran = translator.transformer(s)
+                    res += s_tran
+                if len(res)>0: 
+                    f.write(res)
+                    print("./{}/{}-CN.txt Success!".format(blogdir, date))
+        except Exception as e:
+            print(e)
+            print("./{}/{}-CN.txt Fail!!".format(blogdir, date))
 
 callender = [global_var.date1,global_var.date2,global_var.date3,global_var.date4,global_var.date5,global_var.date6,global_var.date7
 ,global_var.date8,global_var.date9,global_var.date10,global_var.date11,global_var.date12,global_var.date13,global_var.date14,
@@ -103,9 +114,9 @@ global_var.date85,global_var.date86,global_var.date87,global_var.date88,global_v
 if __name__ == "__main__":
     nogi = Nogizaka()
     #嫂子是从201210开始
-    idolname = re.findall('http://blog.nogizaka46.com/(.*)/smph/',global_var.url1)[0]
-    for d in range(11,len(callender)):
-        #os.makedirs("./{}/{}".format(idolname,  callender[d]))
+    idolname = re.findall('http://blog.nogizaka46.com/(.*)/smph/',global_var.url12)[0]
+    for d in range(0,len(callender)):
+        os.makedirs("./{}/{}".format(idolname,  callender[d]))
         blogdir = idolname+'/'+ callender[d]
         nogi.craw_whole_pages(blogdir, global_var.url1,callender[d])
         print(callender[d]+' trans DONE!!!')

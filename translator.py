@@ -3,6 +3,7 @@ import hashlib
 import urllib.parse
 import random
 import json
+import re
 
 
  
@@ -28,8 +29,7 @@ def transformer(content):
     
         #response是HTTPResponse对象
         response = httpClient.getresponse()
-        c = response.read()
-        #c = json.loads(str(c))
+        c = response.read()  #???why这里返回的突然变成了bytes
         s = json.loads(c)
         dst = s["trans_result"][0]["dst"]
         return dst
@@ -39,9 +39,5 @@ def transformer(content):
         if httpClient:
             httpClient.close()
 
-'''
-with open("./manatsu.akimoto/201210/2012-10-11-Thu.txt",'r') as f:
-    c = f.read()
-    s = transformer(c)
-    print(s)
-'''
+ 
+
