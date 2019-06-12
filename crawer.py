@@ -74,18 +74,25 @@ class Nogizaka:
                     
 
     def craw_one_blog(self, blogdir, blogtitle, date, url):
+        blogcontent = str()
         content_ = requests.get(url=url, headers=global_var.headers).text
         content  = re.sub('\n','',content_).encode('utf8')
         tree     = etree.HTML(content)
-        #好像在某年网站保存内容的标签格式发生了变化，从<p>移到了<div> 故保险起见全部带上
+        #different content formats 
         blogcontents = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']/div")
         blogcontents += tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//p")
-        pics     = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//img")
-        blogcontent = str()
+        pics     = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//img")     
         for c in blogcontents:
-            if str(c.text)!= 'None': blogcontent += str(c.text) 
-            else: blogcontent += '\n'
+            blogcontent += c.xpath('string(.)')
         
+        # content format exception 1: <div> xxx <br><br> xxx </div>
+        if len(blogcontents)==0:
+            blogcontents = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']/text()")
+            if len(blogcontents)!=0:
+                    for c in blogcontents:
+                        if str(c)!= 'None': blogcontent += str(c) 
+                        else: blogcontent += '\n'
+        #write into files
         with open("./{}/{}.txt".format(blogdir, date),'w+') as f:
             f.write(blogtitle+'\n\n')
             f.write(blogcontent) 
