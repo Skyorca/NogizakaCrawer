@@ -19,13 +19,13 @@ global_var.date69,global_var.date70,global_var.date71,global_var.date72,global_v
 global_var.date77,global_var.date78,global_var.date79,global_var.date80,global_var.date81,global_var.date82,global_var.date83,global_var.date84,
 global_var.date85,global_var.date86,global_var.date87,global_var.date88,global_var.date89,global_var.date90,global_var.date91]
 
-poolnum = 20
+poolnum = 10
 
 def start_craw(start):
     nogi = crawer.Nogizaka()
     pool = []
     #嫂子是从201210开始
-    idol_url = global_var.url6
+    idol_url = global_var.url33
     idolname = re.findall('http://blog.nogizaka46.com/(.*)/smph/',idol_url)[0]
     for d in range(start,len(callender)):
         os.makedirs("./{}/{}".format(idolname,  callender[d]))

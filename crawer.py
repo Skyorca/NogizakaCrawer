@@ -79,13 +79,13 @@ class Nogizaka:
         content  = re.sub('\n','',content_).encode('utf8')
         tree     = etree.HTML(content)
         #different content formats 
-        blogcontents = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']/div")
+        blogcontents = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//div")
         blogcontents += tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//p")
         pics     = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']//img")     
         for c in blogcontents:
             blogcontent += c.xpath('string(.)')
         
-        # content format exception 1: <div> xxx <br><br> xxx </div>
+        # content format exception 1: <div entrybodyin> xxx <br><br> xxx </div>
         if len(blogcontents)==0:
             blogcontents = tree.xpath("//*[@id='sheet']/div[@class='unit']//div[@class='entrybodyin']/text()")
             if len(blogcontents)!=0:
@@ -136,7 +136,7 @@ class Nogizaka:
 
 def wait_tasks_done(pool):
     for t in pool:
-        if not t.alive():
+        if not t.is_alive():
             pool.remove(t)
         else:
             t.join()  

@@ -1,9 +1,9 @@
 python start.py 0
-
+python start.py 10
 python start.py 20
-
+python start.py 30
 python start.py 40
-
+python start.py 50
 python start.py 60
-
+python start.py 70
 python start.py 80
